@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  frontend: &frontend
+    build:
+      context: ./frontend
+      dockerfile: ./docker/Dockerfile
+      args:
+        username: ${CURRENT_USER}
+    volumes:
+      - ./frontend/app:/home/${CURRENT_USER}/app/
+    working_dir: /home/${CURRENT_USER}/app/
+    ports:
+      - '3000:3000'
+    hostname: frontend
+    environment:
+    - WATCHPACK_POLLING=true
+    command: bash -c "yarn install && yarn dev"
+    container_name: gmo_ichibar_frontend
